@@ -1,239 +1,113 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Rubin Topal – Smart Home & DIY Automation</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rubin Topal | Smart Home & DIY Automation</title>
   <style>
-    :root {
-      --bg: #111111;
-      --card: #1c1c1c;
-      --text: #f4f1ea;
-      --muted: #c9c1b3;
-      --accent: #d93b3b;
-      --accent2: #f0b84f;
-      --border: rgba(255,255,255,0.14);
+    :root{
+      --bg:#0f1117;--text:#f4f4f5;--muted:#b9bbc6;--accent:#ff4d6d;--accent2:#7dd3fc;
+      --card:rgba(255,255,255,.08);--border:rgba(255,255,255,.18);
     }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #2a1b1b 0, var(--bg) 45%);
-      color: var(--text);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
+    *{box-sizing:border-box}
+    body{
+      margin:0;min-height:100vh;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--text);
+      background:radial-gradient(circle at 15% 20%,rgba(255,77,109,.25),transparent 35%),
+      radial-gradient(circle at 85% 10%,rgba(125,211,252,.22),transparent 35%),
+      linear-gradient(135deg,#090a0f,var(--bg));display:grid;place-items:center;padding:24px;
     }
-
-    main {
-      width: min(920px, 100%);
-      text-align: center;
+    .page{width:min(960px,100%);display:grid;gap:22px;animation:fadeIn .8s ease both}
+    header{text-align:center;display:grid;gap:8px}
+    .eyebrow{color:var(--accent2);font-weight:800;letter-spacing:.08em;text-transform:uppercase;font-size:.78rem}
+    h1{margin:0;font-size:clamp(2.1rem,7vw,4.4rem);line-height:.95;letter-spacing:-.05em}
+    .subtitle{color:var(--muted);font-size:clamp(1rem,3vw,1.25rem);margin:0 auto;max-width:680px}
+    .scene{perspective:1400px;min-height:560px}
+    .card{position:relative;min-height:560px;transform-style:preserve-3d;transition:transform .78s cubic-bezier(.2,.8,.2,1);cursor:pointer}
+    .card.is-flipped{transform:rotateY(180deg)}
+    .face{
+      position:absolute;inset:0;backface-visibility:hidden;border:1px solid var(--border);background:var(--card);
+      border-radius:26px;box-shadow:0 24px 80px rgba(0,0,0,.45);backdrop-filter:blur(18px);
+      padding:clamp(22px,5vw,46px);display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;
     }
-
-    .eyebrow {
-      color: var(--accent2);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      font-size: 0.78rem;
-      margin-bottom: 10px;
-    }
-
-    h1 {
-      font-size: clamp(2rem, 7vw, 4.4rem);
-      margin: 0 0 10px;
-      line-height: 0.95;
-    }
-
-    .subtitle {
-      color: var(--muted);
-      margin: 0 auto 28px;
-      max-width: 680px;
-      font-size: 1.05rem;
-    }
-
-    .flip-wrap {
-      perspective: 1200px;
-      margin: 0 auto 24px;
-      max-width: 720px;
-    }
-
-    .card {
-      position: relative;
-      min-height: 540px;
-      transform-style: preserve-3d;
-      transition: transform 0.7s ease;
-      cursor: pointer;
-    }
-
-    .card.flipped { transform: rotateY(180deg); }
-
-    .side {
-      position: absolute;
-      inset: 0;
-      backface-visibility: hidden;
-      background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
-      border: 1px solid var(--border);
-      border-radius: 28px;
-      padding: 32px;
-      box-shadow: 0 24px 80px rgba(0,0,0,0.42);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-
-    .back { transform: rotateY(180deg); }
-
-    .profile {
-      width: 108px;
-      height: 108px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      margin: 0 auto 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2.6rem;
-      font-weight: 800;
-      color: #111;
-    }
-
-    h2 {
-      margin: 0 0 14px;
-      font-size: clamp(1.7rem, 5vw, 2.6rem);
-    }
-
-    p {
-      color: var(--muted);
-      line-height: 1.55;
-      font-size: 1rem;
-    }
-
-    .services {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-      text-align: left;
-      margin-top: 18px;
-    }
-
-    .service {
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 14px;
-      background: rgba(0,0,0,0.18);
-    }
-
-    .service strong { display: block; margin-bottom: 5px; }
-    .service span { color: var(--muted); font-size: 0.9rem; }
-
-    .hint {
-      color: var(--accent2);
-      font-size: 0.9rem;
-      margin-top: 18px;
-    }
-
-    .buttons {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 12px;
-      margin-top: 24px;
-    }
-
-    a.button {
-      color: #111;
-      background: var(--accent2);
-      text-decoration: none;
-      padding: 13px 18px;
-      border-radius: 999px;
-      font-weight: 700;
-    }
-
-    a.button.secondary {
-      color: var(--text);
-      background: transparent;
-      border: 1px solid var(--border);
-    }
-
-    footer {
-      color: var(--muted);
-      font-size: 0.86rem;
-      margin-top: 18px;
-    }
-
-    @media (max-width: 640px) {
-      body { padding: 14px; align-items: flex-start; }
-      main { padding-top: 24px; }
-      .card { min-height: 660px; }
-      .side { padding: 22px; border-radius: 22px; }
-      .services { grid-template-columns: 1fr; }
-    }
+    .face:before{content:"";position:absolute;width:280px;height:280px;right:-90px;top:-120px;background:radial-gradient(circle,rgba(255,77,109,.27),transparent 65%)}
+    .back{transform:rotateY(180deg)}
+    .content{position:relative;z-index:1;display:grid;gap:20px}
+    .tagline{display:inline-flex;align-items:center;gap:8px;width:fit-content;border:1px solid rgba(255,255,255,.16);border-radius:999px;padding:8px 12px;color:var(--muted);font-size:.9rem;background:rgba(0,0,0,.18)}
+    h2{margin:0;font-size:clamp(1.7rem,5vw,3rem);letter-spacing:-.03em;line-height:1}
+    p{color:var(--muted);line-height:1.65;font-size:1.05rem;margin:0}
+    .highlight{color:var(--text);font-weight:700}
+    .chips,.buttons{display:flex;flex-wrap:wrap;gap:10px}
+    .chip{border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.07);border-radius:999px;padding:10px 13px;color:var(--text);font-size:.92rem}
+    .services{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .service{border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.07);border-radius:18px;padding:14px;display:grid;gap:4px}
+    .service small{color:var(--muted);line-height:1.45}
+    .buttons{position:relative;z-index:1}
+    a,button{font:inherit}
+    .btn{border:0;border-radius:999px;padding:13px 17px;text-decoration:none;font-weight:800;color:#111318;background:linear-gradient(135deg,var(--accent),#ff9f1c);box-shadow:0 12px 36px rgba(255,77,109,.25)}
+    .btn.secondary{color:var(--text);background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16);box-shadow:none}
+    .hint,.footer{text-align:center;color:var(--muted);font-size:.9rem}
+    .pulse{display:inline-block;width:9px;height:9px;background:#22c55e;border-radius:50%;animation:pulse 1.8s infinite}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(34,197,94,.55)}70%{box-shadow:0 0 0 12px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
+    @media(max-width:680px){body{padding:16px;align-items:start}.scene,.card,.face{min-height:680px}.services{grid-template-columns:1fr}.buttons{flex-direction:column}.btn{text-align:center}}
   </style>
 </head>
 <body>
-  <main>
-    <div class="eyebrow">Smart Home · DIY Automation · praktische Technik</div>
-    <h1>Rubin Topal</h1>
-    <p class="subtitle">Ich baue individuelle, alltagstaugliche Techniklösungen für Zuhause: smart, handwerklich sauber und möglichst unauffällig integriert.</p>
-
-    <section class="flip-wrap" aria-label="Digitale Portfolio-Karte">
-      <div class="card" id="card" role="button" tabindex="0" aria-label="Karte antippen zum Umdrehen">
-        <div class="side front">
-          <div>
-            <div class="profile">R</div>
-            <h2>Technik, die wirklich hilft.</h2>
-            <p>
-              Ich verbinde Elektrotechnik, Handwerk und kreative Problemlösung. Mein Fokus liegt auf Smart-Home-Systemen, kleinen Automationen, Reparaturen und individuellen Lösungen, die zum Raum und zum Menschen passen.
-            </p>
-            <p>
-              Besonders spannend finde ich Technik, die nicht protzig wirkt, sondern leise im Hintergrund arbeitet: Gardinen, Licht, Sensoren, versteckte Kabel, kleine Steuerungen und praktische Bedienoberflächen.
-            </p>
+  <main class="page">
+    <header>
+      <div class="eyebrow">Smart Home · DIY Automation · Berlin</div>
+      <h1>Rubin Topal</h1>
+      <p class="subtitle">Praktische Techniklösungen für Wohnungen, kleine Räume und kreative Ideen.</p>
+    </header>
+    <section class="scene">
+      <article class="card" id="portfolioCard" tabindex="0" role="button" aria-label="Karte umdrehen">
+        <div class="face front">
+          <div class="content">
+            <div class="tagline"><span class="pulse"></span> Verfügbar für kleine Projekte & Anfragen</div>
+            <h2>Ich baue Technik, die im Alltag wirklich hilft.</h2>
+            <p>Ich verbinde <span class="highlight">Elektrotechnik, Handwerk, Smart Home und kreative Problemlösung</span>. Mein Ziel ist nicht Technik um der Technik willen, sondern Lösungen, die sauber aussehen, zuverlässig funktionieren und sich natürlich in dein Zuhause einfügen.</p>
+            <div class="chips">
+              <span class="chip">Home Assistant</span><span class="chip">ESP32</span><span class="chip">Raspberry Pi</span><span class="chip">Montage</span><span class="chip">Sensorik</span><span class="chip">Reparatur</span>
+            </div>
           </div>
-          <div class="hint">Tippen / klicken zum Umdrehen</div>
+          <div class="buttons">
+            <a class="btn" href="mailto:DEINE-MAIL-HIER">Projekt anfragen</a>
+            <button class="btn secondary" type="button" id="flipBtnFront">Leistungen ansehen</button>
+          </div>
         </div>
-
-        <div class="side back">
-          <div>
-            <h2>Leistungen</h2>
+        <div class="face back">
+          <div class="content">
+            <div class="tagline">Portfolio & Leistungen</div>
+            <h2>Was du bei mir anfragen kannst</h2>
             <div class="services">
-              <div class="service"><strong>Automatische Gardinen</strong><span>Motorisierung, Steuerung, versteckte Integration.</span></div>
-              <div class="service"><strong>Lichtsteuerung</strong><span>Szenen, Bewegungsmelder, smarte Schalter.</span></div>
-              <div class="service"><strong>Sensorik</strong><span>Temperatur, Luftfeuchtigkeit, Bewegung, Anwesenheit.</span></div>
-              <div class="service"><strong>Smart-Home-Zentrale</strong><span>Home Assistant, Raspberry Pi, ESP32-Anbindung.</span></div>
-              <div class="service"><strong>Touchscreen-Bedienung</strong><span>Lokale Oberfläche für Wohnung und Geräte.</span></div>
-              <div class="service"><strong>DIY & Reparatur</strong><span>Individuelle Halterungen, Kabelwege, kleine Sonderlösungen.</span></div>
+              <div class="service"><strong>Automatische Gardinen</strong><small>Motorisierte Systeme, versteckte Kabel, Smart-Home-Anbindung.</small></div>
+              <div class="service"><strong>Licht & Szenen</strong><small>Automationen, Bewegungsmelder, Nachtlicht, smarte Abläufe.</small></div>
+              <div class="service"><strong>Sensorik</strong><small>Temperatur, Luftfeuchtigkeit, Bewegung, Tür/Fenster-Kontakte.</small></div>
+              <div class="service"><strong>Touchscreen-Steuerung</strong><small>Kleine Bedienoberflächen für Zuhause und zukünftige Erweiterungen.</small></div>
+              <div class="service"><strong>Smarte Steckdosen</strong><small>Zeitpläne, Gerätesteuerung, Energie-Automationen.</small></div>
+              <div class="service"><strong>DIY-Speziallösungen</strong><small>Halterungen, Reparaturen, Kabel verstecken, kreative Umbauten.</small></div>
             </div>
+            <p>Ich arbeite projektbezogen: anschauen, Problem verstehen, Lösung planen, sauber umsetzen. Preise je nach Aufwand und Material.</p>
           </div>
-          <div>
-            <div class="buttons">
-              <a class="button" href="mailto:rubin98@web.de">Kontakt aufnehmen</a>
-              <a class="button secondary" href="#" onclick="event.preventDefault(); window.print();">Als PDF speichern</a>
-            </div>
-            <div class="hint">Tippen / klicken zum Zurückdrehen</div>
+          <div class="buttons">
+            <a class="btn" href="mailto:DEINE-MAIL-HIER">Kontakt aufnehmen</a>
+            <button class="btn secondary" type="button" id="flipBtnBack">Zurück</button>
           </div>
         </div>
-      </div>
+      </article>
     </section>
-
-    <footer>
-      Berlin · Kleingewerbe · individuelle Smart-Home- und DIY-Lösungen
-    </footer>
+    <div class="hint">Tippe auf die Karte, um sie umzudrehen.</div>
+    <div class="footer">© Rubin Topal · Berlin · Smart Home & DIY Automation</div>
   </main>
-
   <script>
-    const card = document.getElementById('card');
-    function flipCard() { card.classList.toggle('flipped'); }
-    card.addEventListener('click', flipCard);
-    card.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        flipCard();
-      }
-    });
+    const card=document.getElementById("portfolioCard");
+    const frontBtn=document.getElementById("flipBtnFront");
+    const backBtn=document.getElementById("flipBtnBack");
+    function flipCard(event){if(event)event.stopPropagation();card.classList.toggle("is-flipped");}
+    card.addEventListener("click",flipCard);
+    card.addEventListener("keydown",(event)=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();flipCard(event);}});
+    frontBtn.addEventListener("click",flipCard);
+    backBtn.addEventListener("click",flipCard);
   </script>
 </body>
 </html>
