@@ -1,0 +1,244 @@
+/* Global Blob Guide Module */
+:root{
+  --blob-ink:#241018;
+  --blob-muted:#72515f;
+  --blob-ruby:#c90046;
+  --blob-ruby2:#ff4f87;
+  --blob-gold:#ffb85c;
+  --blob-border:rgba(201,0,70,.18);
+}
+
+#blob-system{
+  position:fixed;
+  right:max(14px,env(safe-area-inset-right));
+  top:56%;
+  transform:translateY(-50%);
+  z-index:9999;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+#blob{
+  width:72px;
+  height:68px;
+  border:0;
+  cursor:pointer;
+  display:grid;
+  place-items:center;
+  position:relative;
+  border-radius:48% 52% 46% 54% / 58% 45% 55% 42%;
+  background:
+    radial-gradient(circle at 35% 27%,rgba(255,255,255,.96),transparent 12%),
+    radial-gradient(circle at 30% 25%,#ff9ab6,#ff4f87 34%,#c90046 78%);
+  box-shadow:
+    0 18px 42px rgba(201,0,70,.34),
+    inset -12px -12px 24px rgba(80,0,32,.18),
+    inset 10px 10px 18px rgba(255,255,255,.24);
+  animation:blobIdle 4s ease-in-out infinite;
+  -webkit-tap-highlight-color:transparent;
+}
+
+#blob:active{transform:scale(.96)}
+#blob:hover{transform:scale(1.06)}
+
+@keyframes blobIdle{
+  0%,100%{border-radius:48% 52% 46% 54% / 58% 45% 55% 42%}
+  50%{border-radius:56% 44% 57% 43% / 46% 58% 42% 55%}
+}
+
+#blob.excited{animation:blobPop .55s ease}
+@keyframes blobPop{
+  30%{transform:scale(1.16) rotate(4deg)}
+  65%{transform:scale(.94) rotate(-4deg)}
+}
+
+#blob.sad{filter:saturate(.72)}
+#blob.chaos .blob-mouth{
+  width:18px;
+  height:18px;
+  border:3px solid white;
+  border-radius:50%;
+}
+
+.blob-face{
+  display:grid;
+  gap:6px;
+  justify-items:center;
+  transform:translateY(4px);
+}
+
+.blob-eyes{
+  display:flex;
+  gap:15px;
+}
+
+.blob-eye{
+  width:10px;
+  height:14px;
+  background:white;
+  border-radius:50%;
+  transition:.13s;
+  box-shadow:0 0 0 2px rgba(70,0,30,.06);
+}
+
+.blob-mouth{
+  width:22px;
+  height:10px;
+  border-bottom:3px solid white;
+  border-radius:0 0 999px 999px;
+  transition:.18s;
+}
+
+#blob.blink .blob-eye{
+  height:3px;
+  border-radius:999px;
+  transform:translateY(6px)!important;
+}
+
+#blob.sad .blob-mouth{
+  border-bottom:0;
+  border-top:3px solid white;
+  border-radius:999px 999px 0 0;
+}
+
+#blob-badge{
+  position:absolute;
+  right:-4px;
+  top:-7px;
+  min-width:24px;
+  height:24px;
+  border-radius:999px;
+  background:var(--blob-gold);
+  display:grid;
+  place-items:center;
+  font-size:.78rem;
+  box-shadow:0 7px 18px rgba(0,0,0,.18);
+  padding:0 6px;
+}
+
+#blob-chat{
+  position:absolute;
+  right:0;
+  top:82px;
+  width:min(350px,calc(100vw - 28px));
+  border:1px solid var(--blob-border);
+  background:rgba(255,255,255,.96);
+  border-radius:24px;
+  padding:15px;
+  box-shadow:0 24px 70px rgba(70,0,28,.22);
+  backdrop-filter:blur(18px);
+  display:none;
+  gap:12px;
+}
+
+#blob-chat.open{
+  display:grid;
+  animation:blobChatPop .2s ease both;
+}
+
+@keyframes blobChatPop{
+  from{opacity:0;transform:translateY(-8px) scale(.98)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+#blob-chat p{
+  margin:0;
+  color:var(--blob-ink);
+  font-size:1rem;
+  line-height:1.45;
+}
+
+#blob-mood,
+#blob-memory{
+  color:var(--blob-muted);
+  font-size:.82rem;
+}
+
+.blob-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.blob-actions button{
+  border:0;
+  border-radius:999px;
+  padding:9px 11px;
+  font-weight:850;
+  cursor:pointer;
+  background:var(--blob-ruby);
+  color:white;
+}
+
+.blob-actions .secondary{
+  background:rgba(201,0,70,.09);
+  color:var(--blob-ruby);
+}
+
+#blob-hint{
+  position:fixed;
+  right:96px;
+  top:56%;
+  transform:translateY(-50%);
+  z-index:9998;
+  background:rgba(255,255,255,.86);
+  border:1px solid var(--blob-border);
+  border-radius:999px;
+  padding:8px 12px;
+  color:var(--blob-ruby);
+  font-weight:850;
+  font-size:.78rem;
+  box-shadow:0 12px 34px rgba(119,35,67,.13);
+  animation:blobHintPulse 2.2s ease-in-out infinite;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+@keyframes blobHintPulse{
+  50%{transform:translateY(-50%) scale(1.04)}
+}
+
+.blob-particle{
+  position:fixed;
+  pointer-events:none;
+  z-index:9998;
+  font-size:20px;
+  animation:blobFly .9s ease forwards;
+}
+
+@keyframes blobFly{
+  to{transform:translate(var(--x),var(--y)) rotate(260deg) scale(.25);opacity:0}
+}
+
+@media(max-width:720px){
+  #blob-system{
+    right:12px;
+    top:58%;
+  }
+
+  #blob{
+    width:66px;
+    height:62px;
+  }
+
+  #blob-chat{
+    right:0;
+    top:76px;
+    width:min(330px,calc(100vw - 24px));
+    border-radius:22px;
+  }
+
+  #blob-hint{
+    right:86px;
+    top:58%;
+    font-size:.74rem;
+    max-width:142px;
+  }
+}
+
+@media(max-width:420px){
+  #blob-hint{display:none}
+
+  #blob-chat{
+    width:calc(100vw - 24px);
+    right:0;
+  }
+}
